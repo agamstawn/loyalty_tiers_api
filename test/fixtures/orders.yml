@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: orders
+#
+#  id           :bigint           not null, primary key
+#  orderId      :string
+#  totalInCents :integer
+#  date         :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  customer_id  :bigint
+#
+
+one:
+  customerId: MyString
+  customerName: MyString
+  orderId: MyString
+  totalInCents: 1
+  date: 2023-11-19 10:56:46
+
+two:
+  customerId: MyString
+  customerName: MyString
+  orderId: MyString
+  totalInCents: 1
+  date: 2023-11-19 10:56:46
