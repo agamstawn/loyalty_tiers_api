@@ -5,11 +5,13 @@ class Api::V1::OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.customer_id = @customer.id 
     
-    @order.save
+    if @order.save
+      @customer.update_tier
+      render json: @order, status: :created
+    else
+      render json: @order.errors.messages, status: :unprocessable_entity
+    end
 
-    @customer.update_tier
-    
-    render json: @order, status: :created
   end
   
   private

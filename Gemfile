@@ -50,3 +50,4 @@ group :development do
 end
 
 gem 'dotenv-rails'
+gem 'whenever', require: false
