@@ -6,9 +6,9 @@ class Api::V1::CustomersController < ApplicationController
 
   end
 
-  def orders_last_year
+  def orders_since_last_year
     @customer = Customer.find(params[:id])
-    @orders = @customer.orders_last_year
+    @orders = @customer.orders_since_last_year
 
     render json: @orders
 

@@ -6,10 +6,17 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post 'orders/create', to: 'orders#create'
-    
+
+      post 'orders/create',  to: 'orders#create'
+      
+      resources :orders, only: [:show, :update] do
+        member do
+          post 'approve'
+        end
+      end
+
       resources :customers, only: [:show] do
-        get 'orders_last_year', on: :member
+        get 'orders_since_last_year', on: :member
       end
     end
     

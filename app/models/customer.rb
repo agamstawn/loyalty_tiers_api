@@ -14,7 +14,7 @@ class Customer < ApplicationRecord
   before_save :set_init_tier
   
   def update_tier
-    total_spent = orders_last_year.sum(:totalInCents)
+    total_spent = orders_last_year.where(status: "completed").sum(:totalInCents)
 
     if total_spent < 100
       new_tier = "Bronze"
@@ -33,7 +33,7 @@ class Customer < ApplicationRecord
 
   def current_tier_info
     current_tier = tier
-    start_date = Date.today.beginning_of_year.prev_year
+    start_date = Date.today.beginning_of_year.prev_year.strftime("%d %B %Y")
     amount_spent_since_start_date = calculate_amount_spent_since(start_date)
     next_tier_amount = calculate_next_tier_amount
     downgrade_date = Date.today.end_of_year
@@ -52,19 +52,19 @@ class Customer < ApplicationRecord
     }
   end
 
-  def orders_last_year
+  def orders_since_last_year
     start_date = Date.today.beginning_of_year.prev_year
-    orders.where('date >= ?', start_date).select(:id, :date, :totalInCents)
+    orders.where('date >= ?', start_date).select(:id, :orderId, :date, :totalInCents, :status).order("date DESC, status ASC")
   end
 
   private
 
   def calculate_amount_spent_since(start_date)
-    orders.where('date >= ?', start_date).sum(:totalInCents)
+    orders.where('date >= ?', start_date).where(status: "completed").sum(:totalInCents)
   end
 
   def calculate_amount_spent_this_year
-    orders.where(date: Date.today.beginning_of_year..Date.today.end_of_year).sum(:totalInCents)
+    orders.where(date: Date.today.beginning_of_year..Date.today.end_of_year).where(status: "completed").sum(:totalInCents)
   end
 
   def calculate_next_tier_amount
