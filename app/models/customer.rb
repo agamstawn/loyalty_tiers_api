@@ -14,7 +14,7 @@ class Customer < ApplicationRecord
   before_save :set_init_tier
   
   def update_tier
-    total_spent = orders_last_year.where(status: "completed").sum(:totalInCents)
+    total_spent = orders_since_last_year.where(status: "completed").sum(:totalInCents)
 
     if total_spent < 100
       new_tier = "Bronze"
@@ -46,7 +46,7 @@ class Customer < ApplicationRecord
       amount_spent_since_start_date: amount_spent_since_start_date,
       next_tier_amount: next_tier_amount,
       downgrade_date: downgrade_date,
-      # amount_this_year: calculate_amount_spent_this_year,
+      amount_this_year: calculate_amount_spent_this_year,
       downgrade_next_year: downgrade_next_year,
       keep_current_tier_amount: keep_current_tier_amount
     }
@@ -76,6 +76,8 @@ class Customer < ApplicationRecord
     when tier.eql?("Gold")
       next_tier_amount = 0
     end
+    
+    next_tier_amount = 0 if next_tier_amount <= 0
     
     next_tier_amount
   end
