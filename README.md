@@ -17,16 +17,20 @@ Before you begin, ensure you have the following installed on your machine:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/loyalty_tier_api.git
+   git clone https://github.com/agamstawn/loyalty_tiers_api.git
 
   cd loyalty_tier_api
 
   bundle install
 
   set the .env file
+  
   DATABASE_HOST="localhost" 
+  
   DATABASE_USERNAME="<USERNAME>" // Replace with the actual username
+
   DATABASE_PASSWORD="<YOUR PASSWORD>"// Replace with the actual password
+  
   DATABASE_NAME="<YOUR DATABASE NAME>"// Replace with the actual database name
 
 
