@@ -14,7 +14,7 @@ class Customer < ApplicationRecord
   before_save :set_init_tier
   
   def update_tier
-    total_spent = orders_since_last_year.where(status: "completed").sum(:totalInCents)
+    total_spent = orders_last_year.where(status: "completed").sum(:totalInCents)
 
     if total_spent < 100
       new_tier = "Bronze"
@@ -55,6 +55,12 @@ class Customer < ApplicationRecord
   def orders_since_last_year
     start_date = Date.today.beginning_of_year.prev_year
     orders.where('date >= ?', start_date).select(:id, :orderId, :date, :totalInCents, :status).order("date DESC, status ASC")
+  end
+
+  def orders_last_year
+    start_date = Date.today.beginning_of_year.prev_year
+    end_date = Date.today.beginning_of_year
+    orders.where(date: start_date..end_date).select(:id, :orderId, :date, :totalInCents, :status).order("date DESC, status ASC")
   end
 
   private
